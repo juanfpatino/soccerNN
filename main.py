@@ -82,11 +82,11 @@ def train_then_predict():
     global input_shape
 
     # todo: input layer
-    model = Sequential([
-        Dense(features * 3 / 2, input_shape=input_shape, acivation='relu'),
-        Dense(features * 3 / 2, activation='relu'),
-        Dense(4, activation='sigmoid'),
-    ])
+    model = Sequential()
+    model.add(Dense(features * 3 / 2, input_shape=input_shape, activation='relu'))
+    model.add(Dense(features * 3 / 2, activation='relu'))
+    model.add(Dense(4, activation='sigmoid'))
+
     print(model.summary())
 
     inputList = []
