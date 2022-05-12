@@ -34,7 +34,7 @@ def fromCSV():
     global matchExamples
     global max_second_dim
 
-    with open('MatchExamples - Soccer.csv', newline='') as csvfile:
+    with open('MatchExamples - EPL.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         x = 0
         for row in reader:
