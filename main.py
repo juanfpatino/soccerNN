@@ -1,6 +1,6 @@
 import tensorflow as tf
 import csv
-from keras.models import Sequential
+import keras.models
 from keras.layers import Dense
 from MatchExample import MatchExample
 
@@ -13,19 +13,19 @@ features: #TODO
 
 labels: home win, draw, away win, no bet
 
-//label as "no bet" if obvious upset
+//label as "no bet" AS WELL if obvious upset
 
 """
 
 # control
 
 matchExamples = []  # array of match example objects
-label_names = []
+attribute_names = []
 
 features = 0  # determined after reading in CSV
 number_of_examples = 0  # determined after reading in CSV
 max_second_dim = 0
-input_shape = (number_of_examples, 1)
+input_shape = (number_of_examples, features)
 
 
 def fromCSV():
@@ -45,7 +45,7 @@ def fromCSV():
                         if y < 5:
                             y = y + 1
                             continue
-                        label_names.append(col)
+                        attribute_names.append(col)
                 x = x + 1
                 continue
             else:
@@ -64,16 +64,26 @@ def fromCSV():
                         if val > max_second_dim:
                             max_second_dim = val
 
-                if row[0] == '1':
-                    label = 0
-                elif row[1] == '1':
-                    label = 1
-                elif row[2] == '1':
-                    label = 2
-                else:
-                    label = 3
+                thisLabel = []
 
-                this_match = MatchExample(this_match_attributes, label, row[4])
+                if row[0] == '1':  # home win
+                    thisLabel.append(1)
+                else:
+                    thisLabel.append(0)
+                if row[1] == '1':  # draw
+                    thisLabel.append(1)
+                else:
+                    thisLabel.append(0)
+                if row[2] == '1':  # away win
+                    thisLabel.append(1)
+                else:
+                    thisLabel.append(0)
+                if row[3] == '1':  # no bet
+                    thisLabel.append(1)
+                else:
+                    thisLabel.append(0)
+
+                this_match = MatchExample(this_match_attributes, thisLabel, row[4])
                 matchExamples.append(this_match)
 
 
@@ -81,8 +91,8 @@ def train_then_predict():
     global features
     global input_shape
 
-    # todo: input layer
-    model = Sequential()
+    input_shape = (None, number_of_examples, features)
+    model = keras.models.Sequential()
     model.add(Dense(features * 3 / 2, input_shape=input_shape, activation='relu'))
     model.add(Dense(features * 3 / 2, activation='relu'))
     model.add(Dense(4, activation='sigmoid'))
@@ -96,16 +106,68 @@ def train_then_predict():
         inputList.append(m.getFeatures())
         output.append(m.getLabel())
 
-    model.fit(inputList, output, 1, 10)
+    model.compile(optimizer='Adagrad', loss=tf.keras.losses.BinaryCrossentropy(from_logits=True))
+
+    epochs = int(input("Number of epochs?"))
+
+    model.fit(inputList, output, number_of_examples, epochs)
 
     predict_att = []
 
-    for s in label_names:
-        p = input("Insert value (0 - " + max_second_dim.__str__() + ") For: " + s)
-        predict_att.append(p)
+    i = input("Predict single match? (y/n)")
+
+    if i == 'y':
+        single = True
+        ii = input("input manually or file? (m/f)")
+
+        if ii == 'm':
+            for s in attribute_names:
+                p = input("Insert value (0 - " + max_second_dim.__str__() + ") For: " + s)
+                predict_att.append(int(p))
+        else:
+            iii = input("Name of file?")
+            f = open(iii, "r")
+            for line in f:
+                for row in line.split(','):
+                    predict_att.append(int(row))
+
+        predictions = [predict_att]
+
+    else:  # todo: Predict a batch of matches
+        single = False
+        predictions = []
+
+    res = model.predict(predictions)
+
+    results = []
+
+    for o in res:
+        count = 0
+        largest = 0.0
+        largestIdx = 0
+        for p in o:
+            if p > largest:
+                largest = p
+                largestIdx = count
+            count = count + 1
+
+        noBetRatio = o[3]/o[largestIdx]
+
+        if largestIdx == 0:
+            results.append("Home win with 'no bet' of " + str(noBetRatio * 100) + "%")
+        if largestIdx == 1:
+            results.append("Draw with 'no bet' of " + str(noBetRatio * 100) + "%")
+        if largestIdx == 2:
+            results.append("Away win with 'no bet' of " + str(noBetRatio * 100) + "%")
+        if largestIdx == 3:
+            results.append("No bet.")
+
+    if single:
+        print("Prediction: " + results[0])
+    else:
+        xx = 123  # todo
 
 
 if __name__ == '__main__':
     fromCSV()
     train_then_predict()
-

@@ -1,7 +1,7 @@
 class MatchExample:
     def __init__(self, features, label, name):
         self.features: list = features  # list of attributes (floats)
-        self.result: int = label  # 0 if home win
+        self.result: [] = label  # 0 if home win
         # 1 if away win
         # 2 if draw
         # 3 if no bet (upset)
@@ -11,6 +11,7 @@ class MatchExample:
         return self.features
 
     def getLabel(self):
+
         return self.result
 
     def __str__(self):
