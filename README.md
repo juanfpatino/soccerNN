@@ -8,4 +8,6 @@
 
 An example of how it should be formatted is included as _example.csv_
 
+Add as many attributes as you'd like to each example
+
 Tensorflow and at least Python 3.9.1 required
