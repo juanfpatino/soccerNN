@@ -94,7 +94,7 @@ def train_then_predict():
     input_shape = (None, number_of_examples, features)
     model = keras.models.Sequential()
 
-    ratio = float(input("Ratio of hidden layer size to input layers? (i.e., 1.5"))
+    ratio = float(input("Ratio of hidden layer size to input layers? (i.e., 1.5)"))
 
     hiddenLayerSize = int(features * ratio)
 
