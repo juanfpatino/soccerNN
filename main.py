@@ -165,13 +165,13 @@ def train_then_predict():
         noBetRatio = o[3]/o[largestIdx]
 
         if largestIdx == 0:
-            results.append("Home win with 'no bet' of " + str(noBetRatio * 100) + "%")
+            results.append("Home win (" + str(1/o[0] * 100) + "%) with 'no bet' of " + str(noBetRatio * 100) + "%")
         if largestIdx == 1:
-            results.append("Draw with 'no bet' of " + str(noBetRatio * 100) + "%")
+            results.append("Draw (" + str(1/o[1] * 100) + "%) with 'no bet' of " + str(noBetRatio * 100) + "%")
         if largestIdx == 2:
-            results.append("Away win with 'no bet' of " + str(noBetRatio * 100) + "%")
+            results.append("Away win (" + str(1/o[2] * 100) + "%) with 'no bet' of " + str(noBetRatio * 100) + "%")
         if largestIdx == 3:
-            results.append("No bet.")
+            results.append("No bet. (" + str(1/o[3]*100) + ")")
 
     if single:
         print("Prediction: " + results[0])
