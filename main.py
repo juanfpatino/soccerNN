@@ -93,8 +93,19 @@ def train_then_predict():
 
     input_shape = (None, number_of_examples, features)
     model = keras.models.Sequential()
-    model.add(Dense(features * 3 / 2, input_shape=input_shape, activation='relu'))
-    model.add(Dense(features * 3 / 2, activation='relu'))
+
+    ratio = float(input("Ratio of hidden layer size to input layers? (i.e., 1.5"))
+
+    hiddenLayerSize = int(features * ratio)
+
+    model.add(Dense(hiddenLayerSize, input_shape=input_shape, activation='relu'))
+
+    h = input("How many (more) hidden layers?")
+
+    for x in range(int(h)):
+        model.add(Dense(hiddenLayerSize, activation='relu'))
+
+    model.add(Dense(hiddenLayerSize, activation='relu'))
     model.add(Dense(4, activation='sigmoid'))
 
     print(model.summary())
