@@ -16,11 +16,11 @@ class MatchExample:
 
     def __str__(self):
 
-        if self.result == 0:
+        if self.result[0] == 1:
             res = "Home win"
-        elif self.result == 1:
+        elif self.result[1] == 1:
             res = "Draw"
-        elif self.result == 2:
+        elif self.result[2] == 1:
             res = "Away win"
         else:
             res = "No bet"

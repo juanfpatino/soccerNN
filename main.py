@@ -59,7 +59,7 @@ def fromCSV():
                         continue
                     else:
 
-                        val = int(col).__abs__()
+                        val = float(col).__abs__()
                         this_match_attributes.append(val)
                         if val > max_second_dim:
                             max_second_dim = val
@@ -134,13 +134,13 @@ def train_then_predict():
         if ii == 'm':
             for s in attribute_names:
                 p = input("Insert value (0 - " + max_second_dim.__str__() + ") For: " + s)
-                predict_att.append(int(p))
+                predict_att.append(float(p))
         else:
             iii = input("Name of file?")
             f = open(iii, "r")
             for line in f:
                 for row in line.split(','):
-                    predict_att.append(int(row))
+                    predict_att.append(float(row))
 
         predictions = [predict_att]
 
