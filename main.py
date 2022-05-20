@@ -3,6 +3,8 @@ import csv
 import keras.models
 from keras.layers import Dense
 from MatchExample import MatchExample
+from tensorflow.python.client import device_lib
+print(device_lib.list_local_devices())
 
 """
 Juan Francisco Patino
