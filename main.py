@@ -36,7 +36,7 @@ def fromCSV():
     global matchExamples
     global max_second_dim
 
-    with open('MatchExamples - Soccer.csv', newline='') as csvfile:
+    with open('MatchExamples - Soccer OLD.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         x = 0
         for row in reader:
@@ -141,8 +141,12 @@ def train_then_predict():
             iii = input("Name of file?")
             f = open(iii, "r")
             for line in f:
+                x = 0
                 for row in line.split(','):
+                    if x == features:
+                        break
                     predict_att.append(float(row))
+                    x = x + 1
 
         predictions = [predict_att]
 
