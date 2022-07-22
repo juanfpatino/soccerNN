@@ -36,7 +36,7 @@ def fromCSV():
     global matchExamples
     global max_second_dim
 
-    with open('MatchExamples - Soccer OLD.csv', newline='') as csvfile:
+    with open('MatchExamples - Soccer.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         x = 0
         for row in reader:
@@ -95,6 +95,8 @@ def train_then_predict():
 
     input_shape = (None, number_of_examples, features)
     model = keras.models.Sequential()
+
+    # todo option to load/restore trained model
 
     ratio = float(input("Ratio of hidden layer size to input layers? (i.e., 1.5)"))
 
@@ -155,6 +157,8 @@ def train_then_predict():
         predictions = []
 
     res = model.predict(predictions)
+
+    # todo store model
 
     results = []
 
